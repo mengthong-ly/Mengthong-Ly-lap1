@@ -6,8 +6,8 @@
   "author": "KZE-THONG <155614637+KZE-THONG@users.noreply.github.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   },
   "dependencies": {
     "express": "^5.1.0"
