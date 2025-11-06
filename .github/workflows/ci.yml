@@ -1,9 +1,9 @@
 name: Node.js CI (Yarn)
 on:
   push:
-    branches: [main]
+    branches: [develop]
   pull_request:
-    branches: [main]
+    branches: [develop]
 jobs:
   build-and-test:
     runs-on: ubuntu-latest

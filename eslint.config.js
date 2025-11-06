@@ -23,9 +23,9 @@ module.exports = [
         before: "readonly",
         after: "readonly",
         beforeEach: "readonly",
-        afterEach: "readonly"
-      }
+        afterEach: "readonly",
+      },
     },
-    rules: {}
-  }
+    rules: {},
+  },
 ];
