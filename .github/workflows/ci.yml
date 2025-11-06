@@ -1,26 +1,62 @@
-name: Node.js CI (Yarn)
+name: Node.js CI/CD Pipeline
+
 on:
   push:
-    branches: [develop]
+    branches: [main, develop]
   pull_request:
-    branches: [develop]
+    branches: [main, develop]
+
 jobs:
-  build-and-test:
+  test:
+    name: Test & Coverage
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: ["18.20.4", "20.18.0"]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Setup Node.js
+
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
+          
+      - name: Verify Node.js version
+        run: |
+          echo "Node.js version: $(node --version)"
+          echo "npm version: $(npm --version)"
+          echo "yarn version: $(yarn --version)"
+
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+
       - name: Lint code
         run: yarn lint
-      - name: Run tests
-        run: yarn test
+
+      - name: Run tests with coverage
+        run: yarn test:coverage
+
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        if: matrix.node-version == '18.x'
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
+
+  deploy:
+    name: Deploy to Render
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
