@@ -8,15 +8,15 @@
   "dependencies": {
     "express": "^5.1.0"
   },
+  "scripts": {
+  "start": "node server.js",
+  "test": "mocha --exit",
+  "lint": "eslint . --ext .js"
+  },
   "devDependencies": {
     "chai": "^6.2.0",
     "eslint": "^9.39.1",
     "mocha": "^11.7.5",
     "supertest": "^7.1.4"
-  },
-  "scripts": {
-  "start": "node server.js",
-  "test": "mocha --exit",
-  "lint": "eslint . --ext .js"
-}
+  }
 }
